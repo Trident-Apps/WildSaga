@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_host"
+    app:startDestination="@id/gameFragment">
+
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="tv.fipe.f.ui.fragments.GameFragment"
+        android:label="GameFragment" >
+        <action
+            android:id="@+id/action_gameFragment_to_victoryFragment"
+            app:destination="@id/victoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="tv.fipe.f.ui.fragments.StartFragment"
+        android:label="StartFragment" >
+        <action
+            android:id="@+id/action_startFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/victoryFragment"
+        android:name="tv.fipe.f.ui.fragments.VictoryFragment"
+        android:label="VictoryFragment" >
+        <action
+            android:id="@+id/action_victoryFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+</navigation>

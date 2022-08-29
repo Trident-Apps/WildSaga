@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Wild Saga</string>
+
+    <string name="facebook_app_id">794833485265178</string>
+    <string name="facebook_client_token">536ea62252f35950c7ca31056a2fea16</string>
+
+    <string name="start_game">Press to start a game</string>
+    <string name="start_btn">Start</string>
+    <string name="victory">You Won!</string>
+    <string name="total">Score</string>
+    <string name="press">Press on Wolf</string>
+    <string name="score">0/5</string>
+    <string name="victory_btn">Play again?</string>
+
+</resources>
