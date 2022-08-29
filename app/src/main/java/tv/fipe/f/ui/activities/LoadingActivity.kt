@@ -3,13 +3,16 @@ package tv.fipe.f.ui.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withCreated
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.onesignal.OneSignal
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.fipe.f.MyApplication
 import tv.fipe.f.R
@@ -35,27 +38,22 @@ class LoadingActivity : AppCompatActivity() {
         if (!checker.isDeviceSecured(this@LoadingActivity)) {
             startGame()
         } else {
-
-            viewModel.getUrlFromDb().observe(this) {
-
-                if (it == null) {
-                    lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                with(viewModel.getUrlFromDb()) {
+                    if (this == null) {
                         viewModel.fetchDeeplink(this@LoadingActivity)
-                    }
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        viewModel.urlLveData.observe(this@LoadingActivity) { url ->
-                            Timber.d("start from deeplink")
-                            startWebView(url)
-                        }
-                    }
-                } else {
-                    viewModel.getUrlFromDb().observe(this@LoadingActivity) { urlEntity ->
-                        startWebView(urlEntity.url!!)
-                        Timber.d("start from db $urlEntity")
-                        Timber.d(urlEntity.toString())
+                            withContext(Dispatchers.Main) {
+                                viewModel.urlLveData.observe(this@LoadingActivity) { url ->
+                                    android.util.Log.d("stt", "start from deeplink")
+                                    startWebView(url)
+                                }                            }
+                    } else {
+                        this.url?.let { startWebView(it) }
+                        Log.d("stt","start from db $this")
                     }
                 }
             }
+
         }
 
     }
@@ -68,6 +66,9 @@ class LoadingActivity : AppCompatActivity() {
     }
 
     private fun startWebView(url: String) {
+        Log.d("stt","start from db $url")
+
+
         with(Intent(this@LoadingActivity, WebViewActivity::class.java)) {
             this.putExtra("url", url)
             startActivity(this)

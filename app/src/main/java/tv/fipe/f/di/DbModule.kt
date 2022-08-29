@@ -19,7 +19,7 @@ object DbModule {
     @Singleton
     @Provides
     fun provideDb(@ApplicationContext context: Context): UrlDatabase {
-        return Room.databaseBuilder(context, UrlDatabase::class.java, Constants.DATABASE_NAME)
+        return Room.databaseBuilder(context, UrlDatabase::class.java, Constants.DATABASE_NAME).allowMainThreadQueries()
             .build()
     }
 

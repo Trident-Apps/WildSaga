@@ -8,9 +8,9 @@ import androidx.room.Query
 
 @Dao
 interface UrlDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUrl(url: UrlEntity)
+    @Insert
+     fun insertUrl(url: UrlEntity)
 
     @Query("SELECT * FROM url_table LIMIT 1")
-    fun getUrl(): LiveData<UrlEntity>
+    fun getUrl(): UrlEntity?
 }

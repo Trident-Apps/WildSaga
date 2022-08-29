@@ -5,7 +5,7 @@ import tv.fipe.f.db.UrlEntity
 
 interface MyRepositoryInt {
 
-    suspend fun insertUrl(urlEntity: UrlEntity)
+     fun insertUrl(urlEntity: UrlEntity)
 
-    fun getUrl(): LiveData<UrlEntity>
+    fun getUrl(): UrlEntity?
 }

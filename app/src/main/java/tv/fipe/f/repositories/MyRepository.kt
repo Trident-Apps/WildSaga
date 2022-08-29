@@ -10,7 +10,7 @@ class MyRepository @Inject constructor(val dao: UrlDao) : MyRepositoryInt {
     @Inject
     lateinit var urlDao: UrlDao
 
-    override suspend fun insertUrl(urlEntity: UrlEntity) = urlDao.insertUrl(urlEntity)
+    override  fun insertUrl(urlEntity: UrlEntity) = urlDao.insertUrl(urlEntity)
 
-    override fun getUrl(): LiveData<UrlEntity> = urlDao.getUrl()
+    override fun getUrl(): UrlEntity? = urlDao.getUrl()
 }

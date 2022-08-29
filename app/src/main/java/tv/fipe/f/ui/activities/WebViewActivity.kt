@@ -3,11 +3,13 @@ package tv.fipe.f.ui.activities
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Message
+import android.util.Log
+import android.view.KeyEvent
 import android.webkit.*
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import tv.fipe.f.R
 import tv.fipe.f.db.UrlEntity
@@ -23,6 +25,7 @@ class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
+        Log.d("stt", "web started")
 
         webView = findViewById(R.id.web_view)
         intent.getStringExtra(INTENT_EXTRA_NAME)?.let { webView.loadUrl(it) }
@@ -118,20 +121,31 @@ class WebViewActivity : AppCompatActivity() {
                     this@WebViewActivity.finish()
                 }
             } else {
-                viewModel.getUrlFromDb().observe(this@WebViewActivity) {
-                    if (it == null) {
-                        viewModel.insertUrlToDB(UrlEntity(url = url))
-                    }
-                }
+
+                if (viewModel.getUrlFromDb() == null && !url.toString().contains("wildsaga") ) {
+                        Log.d("stt", "flows")
+                    viewModel.insertUrlToDB(UrlEntity(url = url))
+
+                        Log.d("stt", viewModel.getUrlFromDb().toString())
+                        }
+
+
             }
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (webView.canGoBack()) {
-            webView.goBack()
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_BACK -> {
+                    if (webView.canGoBack()) {
+                        webView.goBack()
+                    }
+                    return true
+                }
+            }
         }
+        return super.onKeyDown(keyCode, event)
     }
 
     companion object {
