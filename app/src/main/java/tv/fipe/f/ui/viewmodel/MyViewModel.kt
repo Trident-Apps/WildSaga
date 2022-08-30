@@ -16,6 +16,7 @@ import tv.fipe.f.MyApplication
 import tv.fipe.f.db.UrlEntity
 import tv.fipe.f.repositories.MyRepositoryInt
 import tv.fipe.f.utils.Constants
+import tv.fipe.f.utils.TagSender
 import java.util.*
 import javax.inject.Inject
 
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val repository: MyRepositoryInt
 ) : ViewModel() {
+    private val tagSender = TagSender()
 
     val urlLveData: MutableLiveData<String> = MutableLiveData()
 
@@ -40,6 +42,7 @@ class MyViewModel @Inject constructor(
                 fetchAppsData(activity)
             } else {
                 urlLveData.postValue(createUrl(deeplink, null, activity))
+                tagSender.sendTag(deeplink, null)
             }
         }
     }
@@ -48,7 +51,7 @@ class MyViewModel @Inject constructor(
         AppsFlyerLib.getInstance()
             .init(Constants.APPS_DEV_KEY, object : AppsFlyerConversionListener {
                 override fun onConversionDataSuccess(data: MutableMap<String, Any>?) {
-                    sendTag("null", data)
+                    tagSender.sendTag("null", data)
                     urlLveData.postValue(createUrl("null", data, activity))
                 }
 
@@ -84,6 +87,8 @@ class MyViewModel @Inject constructor(
                     Constants.AF_ID_KEY,
                     AppsFlyerLib.getInstance().getAppsFlyerUID(activity)
                 )
+            } else {
+                appendQueryParameter(Constants.AF_ID_KEY, "null")
             }
             appendQueryParameter(Constants.ADSET_ID_KEY, data?.get(DATA_ADSET_ID).toString())
             appendQueryParameter(Constants.CAMPAIGN_ID_KEY, data?.get(DATA_CAMPAIGN_ID).toString())
@@ -98,17 +103,17 @@ class MyViewModel @Inject constructor(
 
     }
 
-    fun sendTag(deeplink: String, data: MutableMap<String, Any>?) {
-        val campaign = data?.get("campaign").toString()
-
-        if (campaign == "null" && deeplink == "null") {
-            OneSignal.sendTag("key2", "organic")
-        } else if (deeplink != "null") {
-            OneSignal.sendTag("key2", deeplink.replace("myapp://", "").substringBefore("/"))
-        } else if (campaign != "null") {
-            OneSignal.sendTag("key2", campaign.substringBefore("_"))
-        }
-    }
+//    fun sendTag(deeplink: String, data: MutableMap<String, Any>?) {
+//        val campaign = data?.get("campaign").toString()
+//
+//        if (campaign == "null" && deeplink == "null") {
+//            OneSignal.sendTag("key2", "organic")
+//        } else if (deeplink != "null") {
+//            OneSignal.sendTag("key2", deeplink.replace("myapp://", "").substringBefore("/"))
+//        } else if (campaign != "null") {
+//            OneSignal.sendTag("key2", campaign.substringBefore("_"))
+//        }
+//    }
 
     companion object {
         val DATA_ADSET_ID = "adset_id"

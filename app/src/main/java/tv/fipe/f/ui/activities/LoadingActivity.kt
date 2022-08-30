@@ -35,27 +35,25 @@ class LoadingActivity : AppCompatActivity() {
             OneSignal.setExternalUserId(MyApplication.gadId)
         }
 
-        if (!checker.isDeviceSecured(this@LoadingActivity)) {
-            startGame()
-        } else {
+//        if (checker.isDeviceSecured(this@LoadingActivity)) {
+//            startGame()
+//        } else {
             lifecycleScope.launch(Dispatchers.IO) {
                 with(viewModel.getUrlFromDb()) {
                     if (this == null) {
                         viewModel.fetchDeeplink(this@LoadingActivity)
                             withContext(Dispatchers.Main) {
                                 viewModel.urlLveData.observe(this@LoadingActivity) { url ->
-                                    android.util.Log.d("stt", "start from deeplink")
+                                    Timber.tag("stt").d("start from deeplink")
                                     startWebView(url)
                                 }                            }
                     } else {
                         this.url?.let { startWebView(it) }
-                        Log.d("stt","start from db $this")
+                        Timber.tag("stt").d("start from db " + this)
                     }
                 }
             }
-
-        }
-
+//        }
     }
 
     private fun startGame() {
