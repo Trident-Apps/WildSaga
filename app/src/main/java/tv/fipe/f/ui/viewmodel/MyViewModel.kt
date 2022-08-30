@@ -103,18 +103,6 @@ class MyViewModel @Inject constructor(
 
     }
 
-//    fun sendTag(deeplink: String, data: MutableMap<String, Any>?) {
-//        val campaign = data?.get("campaign").toString()
-//
-//        if (campaign == "null" && deeplink == "null") {
-//            OneSignal.sendTag("key2", "organic")
-//        } else if (deeplink != "null") {
-//            OneSignal.sendTag("key2", deeplink.replace("myapp://", "").substringBefore("/"))
-//        } else if (campaign != "null") {
-//            OneSignal.sendTag("key2", campaign.substringBefore("_"))
-//        }
-//    }
-
     companion object {
         val DATA_ADSET_ID = "adset_id"
         val DATA_CAMPAIGN_ID = "campaign_id"

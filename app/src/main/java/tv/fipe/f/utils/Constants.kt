@@ -3,7 +3,7 @@ package tv.fipe.f.utils
 object Constants {
     const val DATABASE_NAME = "url_db"
 
-    const val ONESIGNAL_ID = "f2b7d39a-c0dc-4ed3-8937-8cc1ed8b7c05"
+    const val ONESIGNAL_ID = "5ed8c4f5-ee78-4ad7-99cc-a1754144c24d"
     const val APPS_DEV_KEY = "io8mVypDDhtfVkRALkHvGh"
     const val BASE_URL = "https://wildsaga.space/wildsaga.php"
 

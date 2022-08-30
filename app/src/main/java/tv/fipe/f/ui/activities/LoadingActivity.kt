@@ -35,9 +35,9 @@ class LoadingActivity : AppCompatActivity() {
             OneSignal.setExternalUserId(MyApplication.gadId)
         }
 
-//        if (checker.isDeviceSecured(this@LoadingActivity)) {
-//            startGame()
-//        } else {
+        if (checker.isDeviceSecured(this@LoadingActivity)) {
+            startGame()
+        } else {
             lifecycleScope.launch(Dispatchers.IO) {
                 with(viewModel.getUrlFromDb()) {
                     if (this == null) {
@@ -53,7 +53,7 @@ class LoadingActivity : AppCompatActivity() {
                     }
                 }
             }
-//        }
+        }
     }
 
     private fun startGame() {
